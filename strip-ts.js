@@ -7,10 +7,12 @@ var typePositionList = [];
 ts.forEachChild(sourceFile, function (node) {
     if (node.declarationList) {
         node.declarationList.declarations.forEach(function (declaration) {
-            typePositionList.push({
-                start: declaration.type.pos,
-                end: declaration.type.end
-            });
+            if (declaration.type) {
+                typePositionList.push({
+                    start: declaration.type.pos,
+                    end: declaration.type.end
+                });
+            }
         }, []);
     }
 });

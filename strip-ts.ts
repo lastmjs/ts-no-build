@@ -13,10 +13,12 @@ let typePositionList = [];
 ts.forEachChild(sourceFile, (node: ts.Node) => {
     if (node.declarationList) {
         node.declarationList.declarations.forEach((declaration: ts.Node) => {
-            typePositionList.push({
-                start: declaration.type.pos,
-                end: declaration.type.end
-            });
+            if (declaration.type) {
+                typePositionList.push({
+                    start: declaration.type.pos,
+                    end: declaration.type.end
+                });
+            }
         }, []);
     }
 });
