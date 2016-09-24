@@ -18,16 +18,10 @@ console.log(typePositionList);
 var es6 = commentOutTypeScript(sourceFile.text, typePositionList);
 console.log(es6);
 function commentOutTypeScript(text, typePositionList) {
-    return typePositionList.reduce(function (prev, curr) {
-        console.log(prev.text);
-        console.log(curr);
-        console.log(prev.removedLength);
-        return {
-            text: prev.text.replace(prev.text.substring(curr.start - prev.removedLength - 1, curr.end - prev.removedLength), ''),
-            removedLength: curr.end - curr.start + 1
-        };
-    }, {
-        text: text,
-        removedLength: 0
-    }).text;
+    var stringsToReplace = typePositionList.map(function (typePosition) {
+        return text.substring(typePosition.start - 1, typePosition.end);
+    });
+    return stringsToReplace.reduce(function (prev, curr) {
+        return prev.replace(curr, "/*" + curr + "*/");
+    }, text);
 }

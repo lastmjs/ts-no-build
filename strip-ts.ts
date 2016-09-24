@@ -28,16 +28,11 @@ const es6 = commentOutTypeScript(sourceFile.text, typePositionList);
 console.log(es6);
 
 function commentOutTypeScript(text: string, typePositionList) {
-    return typePositionList.reduce((prev, curr) => {
-        console.log(prev.text);
-        console.log(curr);
-        console.log(prev.removedLength);
-        return {
-            text: prev.text.replace(prev.text.substring(curr.start - prev.removedLength - 1, curr.end - prev.removedLength), ''),
-            removedLength: curr.end - curr.start + 1
-        };
-    }, {
-        text,
-        removedLength: 0
-    }).text;
+    const stringsToReplace = typePositionList.map((typePosition) => {
+        return text.substring(typePosition.start - 1, typePosition.end);
+    });
+
+    return stringsToReplace.reduce((prev, curr) => {
+        return prev.replace(curr, `/*${curr}*/`);
+    }, text);
 }
